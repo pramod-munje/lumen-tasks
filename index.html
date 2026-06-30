@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a14" />
+<title>Lumen — Tasks</title>
+<link rel="stylesheet" href="styles/app.css" />
+</head>
+<body data-theme="dark" data-accent="violet" data-density="comfortable">
+
+<!-- ambient backdrop blobs -->
+<div class="ambient" aria-hidden="true">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+  <div class="grain"></div>
+</div>
+
+<main class="app" id="app">
+
+  <!-- =========================== DASHBOARD =========================== -->
+  <section class="screen" id="screen-home" data-screen-label="01 Dashboard">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="avatar" id="avatar">L</div>
+        <div>
+          <div class="greeting" id="greeting">Good evening</div>
+          <div class="date-line" id="today">—</div>
+        </div>
+      </div>
+      <button class="icon-btn" id="open-settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      </button>
+    </header>
+
+    <!-- hero progress ring -->
+    <section class="glass hero-card">
+      <div class="ring-wrap">
+        <svg class="ring" viewBox="0 0 120 120">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="var(--accent-1)"/>
+              <stop offset="100%" stop-color="var(--accent-2)"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="60" cy="60" r="52"/>
+          <circle class="ring-fg" id="ring-fg" cx="60" cy="60" r="52"/>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" id="ring-pct">0%</div>
+          <div class="ring-label">today</div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-key">Total</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val accent" id="stat-done">0</div>
+          <div class="stat-key">Done</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val" id="stat-left">0</div>
+          <div class="stat-key">Left</div>
+        </div>
+        <div class="stat streak">
+          <div class="stat-val flame" id="stat-streak">0<span>🔥</span></div>
+          <div class="stat-key">Streak</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- widgets row -->
+    <section class="widget-row">
+      <article class="glass widget widget-quote" id="quote-widget">
+        <div class="widget-label">Quote of the day</div>
+        <div class="widget-body" id="quote-text">Small steps every day.</div>
+        <div class="widget-meta" id="quote-author">— Lumen</div>
+      </article>
+      <article class="glass widget widget-challenge">
+        <div class="widget-label">Daily challenge</div>
+        <div class="widget-body" id="challenge-text">Drink 8 glasses of water</div>
+        <button class="chip-btn" id="challenge-done">Mark done</button>
+      </article>
+    </section>
+
+    <!-- quick mood + energy -->
+    <section class="glass mood-card">
+      <div class="mood-head">
+        <div>
+          <div class="mood-title">How are you feeling?</div>
+          <div class="mood-sub">Track mood &amp; energy</div>
+        </div>
+      </div>
+      <div class="mood-row" id="mood-row">
+        <button class="mood-pill" data-mood="great">😄<span>Great</span></button>
+        <button class="mood-pill" data-mood="good">🙂<span>Good</span></button>
+        <button class="mood-pill" data-mood="meh">😐<span>Meh</span></button>
+        <button class="mood-pill" data-mood="low">😔<span>Low</span></button>
+        <button class="mood-pill" data-mood="tired">😴<span>Tired</span></button>
+      </div>
+      <div class="energy-wrap">
+        <div class="energy-label">Energy <span id="energy-val">5</span>/10</div>
+        <input type="range" min="0" max="10" value="5" id="energy" class="energy-slider"/>
+      </div>
+    </section>
+
+    <!-- today's tasks preview -->
+    <section class="section-head">
+      <h2>Today</h2>
+      <button class="link-btn" data-nav="tasks">See all →</button>
+    </section>
+    <div id="today-list" class="task-list compact"></div>
+
+  </section>
+
+  <!-- =========================== TASKS =========================== -->
+  <section class="screen" id="screen-tasks" data-screen-label="02 Tasks" hidden>
+    <header class="topbar">
+      <h1 class="screen-title">Tasks</h1>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="toggle-view" aria-label="Toggle view">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </button>
+        <button class="icon-btn" id="toggle-board" aria-label="Board view">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="search-wrap glass">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="text" id="search" placeholder="Search tasks, notes, tags…" />
+      <button class="clear-btn" id="clear-search" hidden>×</button>
+    </div>
+
+    <div class="filter-row" id="filter-row">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="today">Today</button>
+      <button class="filter-chip" data-filter="upcoming">Upcoming</button>
+      <button class="filter-chip" data-filter="overdue">Overdue</button>
+      <button class="filter-chip" data-filter="pinned">📌 Pinned</button>
+      <button class="filter-chip" data-filter="done">✓ Done</button>
+      <button class="filter-chip" data-filter="archived">Archived</button>
+    </div>
+
+    <div class="cat-row" id="cat-row"></div>
+
+    <div class="sort-row">
+      <div class="sort-left">
+        <span class="muted small" id="result-count">0 tasks</span>
+      </div>
+      <select id="sort" class="select-pill">
+        <option value="smart">Smart</option>
+        <option value="date">Due date</option>
+        <option value="priority">Priority</option>
+        <option value="created">Newest</option>
+        <option value="alpha">A → Z</option>
+      </select>
+    </div>
+
+    <div id="task-list" class="task-list"></div>
+    <div id="empty-state" class="empty-state" hidden>
+      <div class="empty-illustration">
+        <svg viewBox="0 0 120 120" width="100" height="100">
+          <circle cx="60" cy="60" r="48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="3 5" opacity=".35"/>
+          <path d="M40 62l14 14 28-32" fill="none" stroke="url(#ringGrad)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="empty-title">Nothing here yet</div>
+      <div class="empty-sub">Tap the + button to add your first task.</div>
+    </div>
+
+    <!-- kanban board -->
+    <div id="board" class="board" hidden>
+      <div class="board-col" data-col="todo">
+        <div class="board-col-head"><span class="dot dot-todo"></span>To do</div>
+        <div class="board-col-body" data-col-body="todo"></div>
+      </div>
+      <div class="board-col" data-col="doing">
+        <div class="board-col-head"><span class="dot dot-doing"></span>Doing</div>
+        <div class="board-col-body" data-col-body="doing"></div>
+      </div>
+      <div class="board-col" data-col="done">
+        <div class="board-col-head"><span class="dot dot-done"></span>Done</div>
+        <div class="board-col-body" data-col-body="done"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== FOCUS =========================== -->
+  
+
+  <!-- =========================== HABITS =========================== -->
+  <section class="screen" id="screen-habits" data-screen-label="04 Habits" hidden>
+    <header class="topbar">
+      <h1 class="screen-title">Habits</h1>
+      <button class="icon-btn" id="add-habit" aria-label="Add habit">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </header>
+    <div class="habit-list" id="habit-list"></div>
+
+    <section class="section-head"><h2>30-day heatmap</h2></section>
+    <div class="glass heatmap-card">
+      <div class="heatmap" id="heatmap"></div>
+      <div class="heatmap-legend">
+        <span class="muted small">Less</span>
+        <span class="hm-cell l0"></span>
+        <span class="hm-cell l1"></span>
+        <span class="hm-cell l2"></span>
+        <span class="hm-cell l3"></span>
+        <span class="hm-cell l4"></span>
+        <span class="muted small">More</span>
+      </div>
+    </div>
+
+    <section class="section-head"><h2>Water tracker</h2></section>
+    <div class="glass water-card">
+      <div class="water-row" id="water-row"></div>
+      <div class="water-meta"><span id="water-count">0</span>/8 glasses today</div>
+    </div>
+  </section>
+
+  <!-- =========================== STATS / CALENDAR =========================== -->
+  <section class="screen" id="screen-stats" data-screen-label="05 Insights" hidden>
+    <header class="topbar">
+      <h1 class="screen-title">Insights</h1>
+    </header>
+
+    <div class="seg-tabs" id="stats-tabs">
+      <button class="seg-tab active" data-tab="overview">Overview</button>
+      <button class="seg-tab" data-tab="calendar">Calendar</button>
+      <button class="seg-tab" data-tab="badges">Badges</button>
+    </div>
+
+    <div id="tab-overview" class="stats-tab">
+      <div class="glass level-card">
+        <div class="level-top">
+          <div>
+            <div class="muted small">Level</div>
+            <div class="level-num" id="level-num">1</div>
+          </div>
+          <div class="xp-info">
+            <div class="muted small">XP</div>
+            <div class="xp-val"><span id="xp-cur">0</span>/<span id="xp-need">100</span></div>
+          </div>
+        </div>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+      </div>
+
+      <div class="glass graph-card">
+        <div class="graph-head">
+          <h3>Last 14 days</h3>
+          <span class="muted small" id="graph-total">0 completed</span>
+        </div>
+        <canvas id="graph" width="800" height="280"></canvas>
+      </div>
+
+      <div class="report-grid">
+        <div class="glass report-card">
+          <div class="report-key">This week</div>
+          <div class="report-val" id="report-week">0</div>
+          <div class="muted small">tasks done</div>
+        </div>
+        <div class="glass report-card">
+          <div class="report-key">This month</div>
+          <div class="report-val" id="report-month">0</div>
+          <div class="muted small">tasks done</div>
+        </div>
+        <div class="glass report-card">
+          <div class="report-key">Completion</div>
+          <div class="report-val"><span id="report-pct">0</span>%</div>
+          <div class="muted small">all-time</div>
+        </div>
+        <div class="glass report-card">
+          <div class="report-key">Best streak</div>
+          <div class="report-val" id="report-streak">0</div>
+          <div class="muted small">days in a row</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-calendar" class="stats-tab" hidden>
+      <div class="glass cal-card">
+        <div class="cal-head">
+          <button class="icon-btn" id="cal-prev">‹</button>
+          <div class="cal-title" id="cal-title">—</div>
+          <button class="icon-btn" id="cal-next">›</button>
+        </div>
+        <div class="cal-weekdays">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+      <section class="section-head"><h2 id="cal-day-title">Selected day</h2></section>
+      <div id="cal-day-list" class="task-list compact"></div>
+    </div>
+
+    <div id="tab-badges" class="stats-tab" hidden>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+  </section>
+
+  <!-- =========================== SETTINGS =========================== -->
+  <section class="screen" id="screen-settings" data-screen-label="06 Settings" hidden>
+    <header class="topbar">
+      <button class="icon-btn back-btn" data-nav="home">‹</button>
+      <h1 class="screen-title">Settings</h1>
+      <span style="width:36px"></span>
+    </header>
+
+    <div class="settings-group">
+      <div class="settings-title">Appearance</div>
+      <div class="glass set-card">
+        <div class="set-row">
+          <div>
+            <div class="set-key">Theme</div>
+            <div class="set-sub muted small">Dark, light, or AMOLED</div>
+          </div>
+          <div class="theme-picker" id="theme-picker">
+            <button class="theme-dot" data-theme="dark" title="Dark"></button>
+            <button class="theme-dot" data-theme="amoled" title="AMOLED"></button>
+            <button class="theme-dot" data-theme="light" title="Light"></button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-key">Accent</div>
+            <div class="set-sub muted small">Color used across the app</div>
+          </div>
+          <div class="accent-picker" id="accent-picker">
+            <button class="accent-dot" data-accent="violet" style="background:linear-gradient(135deg,#8b5cf6,#22d3ee)"></button>
+            <button class="accent-dot" data-accent="blue" style="background:linear-gradient(135deg,#3b82f6,#06b6d4)"></button>
+            <button class="accent-dot" data-accent="green" style="background:linear-gradient(135deg,#10b981,#84cc16)"></button>
+            <button class="accent-dot" data-accent="orange" style="background:linear-gradient(135deg,#f97316,#fbbf24)"></button>
+            <button class="accent-dot" data-accent="pink" style="background:linear-gradient(135deg,#ec4899,#f43f5e)"></button>
+            <button class="accent-dot" data-accent="purple" style="background:linear-gradient(135deg,#a855f7,#6366f1)"></button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-key">Density</div>
+            <div class="set-sub muted small">Card size &amp; spacing</div>
+          </div>
+          <div class="seg" id="density-picker">
+            <button data-density="compact">Compact</button>
+            <button data-density="comfortable" class="active">Cozy</button>
+            <button data-density="large">Large</button>
+          </div>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-key">Font size</div>
+            <div class="set-sub muted small"><span id="font-val">100</span>%</div>
+          </div>
+          <input id="font-size" type="range" min="85" max="130" step="5" value="100" class="energy-slider" style="max-width:160px"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Notifications</div>
+      <div class="glass set-card">
+        <div class="set-row">
+          <div>
+            <div class="set-key">Browser reminders</div>
+            <div class="set-sub muted small">Allow notifications for due tasks</div>
+          </div>
+          <button class="primary-btn pill-btn small-btn" id="notif-enable">Enable</button>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-key">Daily check-in</div>
+            <div class="set-sub muted small">9:00 AM reminder</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="daily-reminder"/><span></span></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Data</div>
+      <div class="glass set-card">
+        <div class="set-row">
+          <div>
+            <div class="set-key">Export</div>
+            <div class="set-sub muted small">Download a JSON backup</div>
+          </div>
+          <button class="ghost-btn pill-btn" id="export-json">Export</button>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="set-key">Import</div>
+            <div class="set-sub muted small">Restore from JSON</div>
+          </div>
+          <label class="ghost-btn pill-btn" for="import-json" style="cursor:pointer">Import</label>
+          <input type="file" id="import-json" accept="application/json" hidden/>
+        </div>
+        <div class="set-row danger">
+          <div>
+            <div class="set-key">Reset app</div>
+            <div class="set-sub muted small">Erase all local data</div>
+          </div>
+          <button class="ghost-btn pill-btn danger-btn" id="reset-app">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">About</div>
+      <div class="glass set-card">
+        <div class="set-row">
+          <div>
+            <div class="set-key">Lumen Tasks</div>
+            <div class="set-sub muted small">v1.0 • Works fully offline</div>
+          </div>
+          <div class="logo-mini">L</div>
+        </div>
+        <div style="margin-top:16px;padding-top:4px;padding-bottom:4px;text-align:center;">
+          <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;">Developed by</div>
+          <div style="font-size:22px;font-weight:700;color:var(--fg);letter-spacing:0.5px;">Pramod Munje</div>
+          <a href="https://instagram.com/__m5__143" target="_blank"
+             style="display:inline-block;margin-top:6px;color:var(--accent-1);font-size:13px;text-decoration:none;letter-spacing:0.5px;">
+             @__m5__143
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- floating add button -->
+<button class="fab" id="fab" aria-label="Add task">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+
+<!-- bottom navigation -->
+<nav class="bottom-nav glass" id="bottom-nav">
+  <button class="nav-item active" data-nav="home">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+    <span>Home</span>
+  </button>
+  <button class="nav-item" data-nav="tasks">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8 12 3 3 5-6"/></svg>
+    <span>Tasks</span>
+  </button>
+  <button class="nav-item" data-nav="habits">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-4.5-7-10a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 5.5-7 10-7 10z"/></svg>
+    <span>Habits</span>
+  </button>
+  <button class="nav-item" data-nav="stats">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16M6 16v-6M11 16V5M16 16v-9M21 16v-3"/></svg>
+    <span>Stats</span>
+  </button>
+</nav>
+
+<!-- =========================== TASK SHEET =========================== -->
+<div class="sheet-backdrop" id="sheet-backdrop" hidden style="display:none"></div>
+<aside class="sheet glass" id="task-sheet" hidden style="display:none">
+  <div class="sheet-handle"></div>
+  <div class="sheet-head">
+    <h3 id="sheet-title">New task</h3>
+    <button class="icon-btn" id="sheet-close">×</button>
+  </div>
+  <form id="task-form" class="sheet-body" autocomplete="off">
+    <div class="field-row">
+      <button type="button" class="emoji-btn" id="emoji-btn">✨</button>
+      <input type="text" id="f-title" placeholder="Task title" required maxlength="120"/>
+    </div>
+    <div class="emoji-row" id="emoji-row" hidden style="display:none">
+      <button type="button" data-emoji="✨">✨</button>
+      <button type="button" data-emoji="📚">📚</button>
+      <button type="button" data-emoji="💼">💼</button>
+      <button type="button" data-emoji="🏋️">🏋️</button>
+      <button type="button" data-emoji="🛒">🛒</button>
+      <button type="button" data-emoji="🎮">🎮</button>
+      <button type="button" data-emoji="💰">💰</button>
+      <button type="button" data-emoji="☕">☕</button>
+      <button type="button" data-emoji="🎯">🎯</button>
+      <button type="button" data-emoji="📞">📞</button>
+      <button type="button" data-emoji="🍎">🍎</button>
+      <button type="button" data-emoji="🚀">🚀</button>
+    </div>
+
+    <textarea id="f-desc" placeholder="Description (optional)" rows="2" maxlength="500"></textarea>
+
+    <div class="field-grid">
+      <label class="field">
+        <span>Category</span>
+        <select id="f-cat"></select>
+      </label>
+      <label class="field">
+        <span>Priority</span>
+        <select id="f-pri">
+          <option value="low">Low</option>
+          <option value="med" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Due date</span>
+        <input type="date" id="f-date"/>
+      </label>
+      <label class="field">
+        <span>Due time</span>
+        <input type="time" id="f-time"/>
+      </label>
+      <label class="field">
+        <span>Duration (min)</span>
+        <input type="number" id="f-dur" min="0" max="600" placeholder="30"/>
+      </label>
+      <label class="field">
+        <span>Color</span>
+        <div class="color-row" id="color-row">
+          <button type="button" data-color="violet" style="--c:#8b5cf6"></button>
+          <button type="button" data-color="blue" style="--c:#3b82f6"></button>
+          <button type="button" data-color="green" style="--c:#10b981"></button>
+          <button type="button" data-color="orange" style="--c:#f97316"></button>
+          <button type="button" data-color="pink" style="--c:#ec4899"></button>
+          <button type="button" data-color="cyan" style="--c:#06b6d4"></button>
+        </div>
+      </label>
+    </div>
+
+    <textarea id="f-notes" placeholder="Notes" rows="2" maxlength="800"></textarea>
+
+    <div class="suggest-box" id="suggest-box" hidden>
+      <span>💡 Suggestion:</span> <span id="suggest-text"></span>
+    </div>
+
+    <div class="sheet-actions">
+      <button type="button" class="ghost-btn" id="sheet-cancel">Cancel</button>
+      <button type="submit" class="primary-btn pill-btn">Save task</button>
+    </div>
+  </form>
+</aside>
+
+<!-- toast -->
+<div class="toast" id="toast" hidden><span id="toast-text"></span></div>
+
+<!-- confetti canvas -->
+<canvas id="confetti" class="confetti"></canvas>
+
+<!-- focus fullscreen overlay -->
+
+<script src="scripts/data.js"></script>
+<script src="scripts/storage.js"></script>
+<script src="scripts/ui.js"></script>
+<script src="scripts/tasks.js"></script>
+<script src="scripts/habits.js"></script>
+<script src="scripts/stats.js"></script>
+<script src="scripts/app.js"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
