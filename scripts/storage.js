@@ -43,7 +43,6 @@ const STORE = {
         this.state = this._merge(DEFAULT_STATE, JSON.parse(raw));
       } else {
         this.state = structuredClone(DEFAULT_STATE);
-        this._seed();   // first-run demo content
         this.save();
       }
     } catch (e) {
